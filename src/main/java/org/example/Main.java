@@ -1,41 +1,47 @@
 package org.example;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.google.gson.Gson;
-import org.example.Data.XmlManager;
-import org.example.Models.Person;
+import org.example.Repository.CreadorPDF;
+import org.example.Repository.manejadorObjectos.JsonManegador;
+import org.example.Repository.manejadorObjectos.XmlManegador;
+import org.example.Model.Person.DatosFiscales;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("<---------------------------Object toString---------------------------------------->");
+        System.out.println("<---------------------------Object toString toString---------------------------------------->");
         //Create object
-        Person person = new Person("Noa", 19, "noa@c.com","0129871356");
+        DatosFiscales person = new DatosFiscales("Noa", "sss", "noa@c.com","0129871356");
         System.out.println(person.toString());
         System.out.println("<---------------------------Serialization---------------------------------------->");
         //Serialization
-        Gson gson = new Gson();
-        String jsonPerson = gson.toJson(person);
+        JsonManegador jm = new JsonManegador();
+        String jsonPerson = (String) jm.serialize(person);
         System.out.println(jsonPerson);
 
-        System.out.println("<--------------------------Deserialization--------------------------------------->");
+        System.out.println("<--------------------------Deserialization toString--------------------------------------->");
         //Deserialization
-        Person person2 = gson.fromJson(jsonPerson, Person.class);
+        DatosFiscales person2 = (DatosFiscales) jm.deserialize(jsonPerson, DatosFiscales.class);
         System.out.println(person2.toString());
 
-
-
-        XmlManager xmanager = new XmlManager();
+        XmlManegador xmanager = new XmlManegador();
 
         try {
             System.out.println("<---------------------------Serialization XML---------------------------------------->");
             String xml = (String) xmanager.serialize(person);
             System.out.println(xml);
-            System.out.println("<--------------------------Deserialization XML--------------------------------------->");
-            Person person3 = (Person) xmanager.deserialize(xml,Person.class);
+            System.out.println("<--------------------------Deserialization XML toString--------------------------------------->");
+            DatosFiscales person3 = (DatosFiscales) xmanager.deserialize(xml, DatosFiscales.class);
             System.out.println(person3.toString());
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
+
+
+        CreadorPDF mgpdf = new CreadorPDF();
+
+        mgpdf.crearNuevoArchivo("oscar.pdf","Hola Mundo");
+        String valor = System.getenv("CORREOEMAIL");
+        System.out.println(valor);
 
     }
 }

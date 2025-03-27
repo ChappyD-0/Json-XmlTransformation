@@ -1,13 +1,17 @@
-package org.example.Data;
+package org.example.Repository.manejadorObjectos;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import org.example.Repositorys.TransferObjects;
+import org.example.Repository.TranferenciaObjectos;
 
-public class XmlManager implements TransferObjects {
+public class XmlManegador implements TranferenciaObjectos {
     XmlMapper xmlMapper = new XmlMapper();
+
+    public XmlManegador() {
+    }
+
     @Override
     public Object serialize(Object obj) throws JsonProcessingException {
-        return xmlMapper.writeValueAsString(obj);
+        return xmlMapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
     }
 
     @Override
